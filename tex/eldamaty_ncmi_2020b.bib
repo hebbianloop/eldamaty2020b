@@ -1,0 +1,1159 @@
+%%% Bibliographic Database for LaTeX (BibTeX)
+%%
+%%  What is this? -- A bibliographic database file that allows for automatic reference generation in any specified style by pulling from metadata organized as key : value pairs
+%%
+%% Why should I care? -- This makes assembling references incredibly easy
+%%
+%% How do I use this? -- Add an entry to the bibliography as a book, collection, proceeding, database, manual, article etc. using the example templates included below. 
+%% It is actually MUCH easier to use google scholar to automatically generate this object for you --> just find your reference in google scholar, click on the quotation mark that gives you the citation and then click on the "BibTeX" link to automatically generate the entry. You can copy paste that into this file.
+%%
+%% How do I reference in line? -- Use the \cite command to reference an entry in the database. Overleaf will autocomplete for you. Each reference entry is indexed by the very first line in the entry. For example the entry below:
+%%
+@book{book,
+  author    = {Author Name}, 
+  title     = {The title of the work},
+  publisher = {The name of the publisher},
+  address   = {The city},
+  year      = 1993,
+}
+%% would be referenced by --> \cite{book} 
+%  --> Very easy, see .tex file for example
+%%
+%% Lastly: To actually generate the references you need to make sure to add a \bibliography{file} at the end of your latex document. Do not include the file extension (.bib). File is the name of the bibliography (i.e., the file you are reading now). Please make sure to also include a \bibliographystyle{style} command to load the style. A default is "plain", you can try "apacite" or downloading your favorite journal and using their .bst file.
+%%
+%
+%% Make sense? If not leave a comment and I will help you.
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Here are some templates for entries:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@incollection{chapter,
+  author       = {Bauthor Surname}, 
+  title        = {The title of the work},
+  editor       = {Editor Name},
+  booktitle    = {The title of the book},
+  publisher    = {The name of the publisher},
+  address      = {The city},
+  year         = 2002,
+  pages        = {201-213},
+}
+@InProceedings{conference,
+  author = {Cauthor Name and Dauthor Surname and Fauthor LastName},
+  title = {The title of the work},
+  booktitle = {The title of the conference proceedings},
+  year = 1996,
+  publisher = {The name of the publisher},
+  editor = {Editor Name1 and Editor Name2},
+  pages = {41-50},
+}
+@book{cho,
+  author       = {Gauthor Name1}, 
+  title        = {The title of the work},
+  publisher = {Country code and patent number},
+  address      = {Patent Country},
+  year = 2013
+}
+@book{patent,
+  author    = {Hauthor Surname1}, 
+  title     = {The title of the work},
+  publisher = {Patent number},
+  address   = {Patent country},
+  year      = 2010,
+}
+% please use misc for datasets
+@misc{dataset, 
+	author = "Author1 LastName1 and Author2 LastName2 and Author3 LastName3",
+	title = "Data Title",
+	year = "2011",
+	doi = "10.000/55555",
+	URL = "http://www.frontiersin.org/",
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% METHODOLOGY
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@book{schneider2002prime,
+  title={E-Prime: User's guide},
+  author={Schneider, Walter and Eschman, Amy and Zuccolotto, Anthony},
+  year={2002},
+  publisher={Psychology Software Incorporated}
+}
+@book{finch2015latent,
+  title={Latent variable modeling with R},
+  author={Finch, W Holmes and French, Brian F},
+  year={2015},
+  publisher={Routledge}
+}
+@article{stanislaw1999calculation,
+  title={Calculation of signal detection theory measures},
+  author={Stanislaw, Harold and Todorov, Natasha},
+  journal={Behavior research methods, instruments, \& computers},
+  volume={31},
+  number={1},
+  pages={137--149},
+  year={1999},
+  publisher={Springer}
+}
+
+@article{veale2014edinburgh,
+  title={Edinburgh handedness inventory--short form: a revised version based on confirmatory factor analysis},
+  author={Veale, Jaimie F},
+  journal={Laterality: Asymmetries of Body, Brain and Cognition},
+  volume={19},
+  number={2},
+  pages={164--177},
+  year={2014},
+  publisher={Taylor \& Francis}
+}
+@article{manuck2010ses,
+  title={Subjective socioeconomic status and presence of the metabolic syndrome in midlife community volunteers},
+  author={Manuck, Stephen B and Phillips, Jennifer and Gianaros, Peter J and Flory, Janine D and Muldoon, Matthew F},
+  journal={Psychosomatic medicine},
+  volume={72},
+  number={1},
+  pages={35},
+  year={2010},
+  publisher={NIH Public Access}
+}
+@article{myerson2001area,
+  title={Area under the curve as a measure of discounting},
+  author={Myerson, Joel and Green, Leonard and Warusawitharana, Missaka},
+  journal={Journal of the experimental analysis of behavior},
+  volume={76},
+  number={2},
+  pages={235--243},
+  year={2001},
+  publisher={Wiley Online Library}
+}
+@article{horn2003response,
+  title={Response inhibition and impulsivity: an fMRI study},
+  author={Horn, NR and Dolan, Mairead and Elliott, Rebecca and Deakin, John FW and Woodruff, PWR},
+  journal={Neuropsychologia},
+  volume={41},
+  number={14},
+  pages={1959--1966},
+  year={2003},
+  publisher={Elsevier}
+}
+
+@article{smith2013motor,
+  title={Motor and non-motor inhibition in the Go/NoGo task: an ERP and fMRI study},
+  author={Smith, Janette L and Jamadar, Sharna and Provost, Alexander L and Michie, Patricia T},
+  journal={International Journal of Psychophysiology},
+  volume={87},
+  number={3},
+  pages={244--253},
+  year={2013},
+  publisher={Elsevier}
+}
+
+@article{ernst2004wheeloffortune,
+  title={Choice selection and reward anticipation: an fMRI study},
+  author={Ernst, Monique and Nelson, Eric E and McClure, Erin B and Monk, Christopher S and Munson, Suzanne and Eshel, Neir and Zarahn, Eric and Leibenluft, Ellen and Zametkin, Alan and Towbin, Kenneth and others},
+  journal={Neuropsychologia},
+  volume={42},
+  number={12},
+  pages={1585--1597},
+  year={2004},
+  publisher={Elsevier}
+}
+
+@article{dahlberg2005measuring,
+  title={Measuring violence-related attitudes, behaviors, and influences among youths: A compendium of assessment tools},
+  author={Dahlberg, Linda L and others},
+  journal={Centers for disease control and prevention},
+  year={2005},
+  publisher={ERIC}
+}
+
+ @Manual{R,
+    title = {R: A Language and Environment for Statistical Computing},
+    author = {{R Core Team}},
+    organization = {R Foundation for Statistical Computing},
+    address = {Vienna, Austria},
+    year = {2019},
+    url = {https://www.R-project.org/},
+  }
+
+  @Manual{DescTools,
+    title = {DescTools: Tools for Descriptive Statistics},
+    author = {Andri Signorell et mult. al.},
+    year = {2020},
+    note = {R package version 0.99.37},
+    url = {https://cran.r-project.org/package=DescTools},
+  }
+
+  @Article{MVN,
+    title = {MVN: An R Package for Assessing Multivariate Normality.},
+    author = {Selcuk Korkmaz and Dincer Goksuluk and Gokmen Zararsiz},
+    journal = {The R Journal},
+    year = {2014},
+    volume = {6},
+    number = {2},
+    pages = {151--162},
+    url =
+      {https://journal.r-project.org/archive/2014-2/korkmaz-goksuluk-zararsiz.pdf},
+  }
+
+@article{HuTzeBentler1999,
+  title={Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives},
+  author={Hu, Li-tze and Bentler, Peter M},
+  journal={Structural equation modeling: a multidisciplinary journal},
+  volume={6},
+  number={1},
+  pages={1--55},
+  year={1999},
+  publisher={Taylor \& Francis}
+}
+@incollection{sobel1997measurement,
+  title={Measurement, causation and local independence in latent variable models},
+  author={Sobel, Michael E},
+  booktitle={Latent variable modeling and applications to causality},
+  pages={11--28},
+  year={1997},
+  publisher={Springer}
+}
+@article{cooper2019neuroimaging,
+  title={Neuroimaging of individual differences: A latent variable modeling perspective},
+  author={Cooper, Shelly R and Jackson, Joshua J and Barch, Deanna M and Braver, Todd S},
+  journal={Neuroscience \& Biobehavioral Reviews},
+  volume={98},
+  pages={29--46},
+  year={2019},
+  publisher={Elsevier}
+}
+@article{Borges2016,
+  title={An alternative approach to calculating Area-Under-the-Curve (AUC) in delay discounting research},
+  author={Borges, Allison M and Kuang, Jinyi and Milhorn, Hannah and Yi, Richard},
+  journal={Journal of the Experimental Analysis of Behavior},
+  volume={106},
+  number={2},
+  pages={145--155},
+  year={2016},
+  publisher={Wiley Online Library}
+}
+
+@article{HuTzeBentler1998,
+  title={Fit indices in covariance structure modeling: Sensitivity to underparameterized model misspecification.},
+  author={Hu, Li-tze and Bentler, Peter M},
+  journal={Psychological methods},
+  volume={3},
+  number={4},
+  pages={424},
+  year={1998},
+  publisher={American Psychological Association}
+}
+
+@article{KennyEtAl2015,
+  title={The performance of RMSEA in models with small degrees of freedom},
+  author={Kenny, David A and Kaniskan, Burcu and McCoach, D Betsy},
+  journal={Sociological Methods \& Research},
+  volume={44},
+  number={3},
+  pages={486--507},
+  year={2015},
+  publisher={Sage Publications Sage CA: Los Angeles, CA}
+}
+
+  @Article{Lavaan,
+    title = {{lavaan}: An {R} Package for Structural Equation
+      Modeling},
+    author = {Yves Rosseel},
+    journal = {Journal of Statistical Software},
+    year = {2012},
+    volume = {48},
+    number = {2},
+    pages = {1--36},
+    url = {http://www.jstatsoft.org/v48/i02/},
+  }
+
+  @Article{FriedmanHastieTibshirani2010,
+    title = {Regularization Paths for Generalized Linear Models via
+      Coordinate Descent},
+    author = {Jerome Friedman and Trevor Hastie and Robert Tibshirani},
+    journal = {Journal of Statistical Software},
+    year = {2010},
+    volume = {33},
+    number = {1},
+    pages = {1--22},
+    url = {http://www.jstatsoft.org/v33/i01/},
+  }
+  
+  @article{friedman2009glmnet,
+  title={glmnet: Lasso and elastic-net regularized generalized linear models},
+  author={Friedman, Jerome and Hastie, Trevor and Tibshirani, Rob},
+  journal={R package version},
+  volume={1},
+  number={4},
+  year={2009}
+}
+  
+  @Article{SimonFriedmanHastie2011,
+    title = {Regularization Paths for Cox's Proportional Hazards Model
+      via Coordinate Descent},
+    author = {Noah Simon and Jerome Friedman and Trevor Hastie and Rob
+      Tibshirani},
+    journal = {Journal of Statistical Software},
+    year = {2011},
+    volume = {39},
+    number = {5},
+    pages = {1--13},
+    url = {http://www.jstatsoft.org/v39/i05/},
+  }
+@article{cham2017full,
+  title={Full information maximum likelihood estimation for latent variable interactions with incomplete indicators},
+  author={Cham, Heining and Reshetnyak, Evgeniya and Rosenfeld, Barry and Breitbart, William},
+  journal={Multivariate behavioral research},
+  volume={52},
+  number={1},
+  pages={12--30},
+  year={2017},
+  publisher={Taylor \& Francis}
+}
+@Article{Fishbein2016,
+  author =	 {Fishbein, {DH} and Rose, {EJ} and Darcey, {VL} and Belcher, {AM} and VanMeter, {JW}},
+  title =	 {Neurodevelopmental Precursors and Consequences of Substance Use during Adolescence: Promises and Pitfalls of Longitudinal Neuroimaging Strategies},
+  journal =	 {Frontiers in Human Neuroscience},
+  year =	 2016,
+  volume =	 10,
+  pages =	 {296}
+}
+
+
+@book{bornstein2003socioeconomic,
+  title={Socioeconomic status, parenting, and child development: The Hollingshead Four-Factor Index of Social Status and The Socioeconomic Index of Occupations.},
+  author={Bornstein, Marc H and Hahn, Chun-Shin and Suwalsky, Joan TD and Haynes, O Maurice},
+  year={2003},
+  publisher={Lawrence Erlbaum Associates Publishers}
+}
+@article{kaufman2004kaufman,
+  title={Kaufman brief intelligence test--second edition (KBIT-2)},
+  author={Kaufman, Alan S},
+  journal={Circle Pines, MN: American Guidance Service},
+  year={2004}
+}
+
+@article{borges2016alternative,
+  title={An alternative approach to calculating Area-Under-the-Curve (AUC) in delay discounting research},
+  author={Borges, Allison M and Kuang, Jinyi and Milhorn, Hannah and Yi, Richard},
+  journal={Journal of the Experimental Analysis of Behavior},
+  volume={106},
+  number={2},
+  pages={145--155},
+  year={2016},
+  publisher={Wiley Online Library}
+}
+
+@article{carskadon1993self,
+  title={A self-administered rating scale for pubertal development},
+  author={Carskadon, Mary A and Acebo, Christine},
+  journal={Journal of Adolescent Health},
+  volume={14},
+  number={3},
+  pages={190--195},
+  year={1993},
+  publisher={Elsevier}
+}
+
+@article{carver1994behavioral,
+  title={Behavioral inhibition, behavioral activation, and affective responses to impending reward and punishment: the BIS/BAS scales.},
+  author={Carver, Charles S and White, Teri L},
+  journal={Journal of personality and social psychology},
+  volume={67},
+  number={2},
+  pages={319},
+  year={1994},
+  publisher={American Psychological Association}
+}
+
+@article{bosworth1995teen,
+  title={Teen Conflict Survey. Bloomington, IN: Center for Adolescent Studies, Indiana University; 1995},
+  author={Bosworth, K and Espelage, D},
+  journal={Unpublished)[Google Scholar]},
+  year={1995}
+}
+
+
+
+@article{tottenham2009nimstim,
+  title={The NimStim set of facial expressions: judgments from untrained research participants},
+  author={Tottenham, Nim and Tanaka, James W and Leon, Andrew C and McCarry, Thomas and Nurse, Marcella and Hare, Todd A and Marcus, David J and Westerlund, Alissa and Casey, BJ and Nelson, Charles},
+  journal={Psychiatry research},
+  volume={168},
+  number={3},
+  pages={242--249},
+  year={2009},
+  publisher={Elsevier}
+}
+
+@article{dalla2003effects,
+  title={Effects of identification and usefulness of the Lie Scale of the Drug Use Screening Inventory (DUSI-R) in the assessment of adolescent drug use},
+  author={Dalla-D{\'e}a, Hilda Regina Ferreira and De Micheli, Denise and Formigoni, Maria Lucia O Souza},
+  journal={Drug and alcohol dependence},
+  volume={72},
+  number={3},
+  pages={215--223},
+  year={2003},
+  publisher={Elsevier}
+}
+
+@article{tarter1994reliability,
+  title={Reliability of the Drug Use Screening Inventory among adolescent alcoholics},
+  author={Tarter, Ralph E and Mezzich, Ada C and Kirisci, Levent and Kaczynksi, Nancy},
+  journal={Journal of Child \& Adolescent Substance Abuse},
+  volume={3},
+  number={1},
+  pages={25--36},
+  year={1994},
+  publisher={Taylor \& Francis}
+}
+
+@article{kirisci2009violence,
+  title={The violence proneness scale of the DUSI-R predicts adverse outcomes associated with substance abuse},
+  author={Kirisci, Levent and Tarter, Ralph and Reynolds, Maureen},
+  journal={American journal on addictions},
+  volume={18},
+  number={2},
+  pages={173--177},
+  year={2009},
+  publisher={Taylor \& Francis}
+}
+
+@article{petersen1988self,
+  title={A self-report measure of pubertal status: Reliability, validity, and initial norms},
+  author={Petersen, Anne C and Crockett, Lisa and Richards, Maryse and Boxer, Andrew},
+  journal={Journal of youth and adolescence},
+  volume={17},
+  number={2},
+  pages={117--133},
+  year={1988},
+  publisher={Springer}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Reviewed Literature
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Adolescent Brain Development
+@Article{Gogtay2004,
+  author =	 {Gogtay, Nitin and Giedd, Jay N and Lusk, Leslie and Hayashi, Kiralee M and Greenstein, Deanna and Vaituzis, Catherine A and Nugent, Tom F and Herman, David H and Clasen, Liv S and Toga, Arthur W and Rapoport, Judith L and Thompson, Paul M},
+  title =	 {Dynamic mapping of human cortical development during childhood through early adulthood},
+  journal =	 {P Natl Acad Sci Usa},
+  year =	 2004,
+  volume =	 101,
+  pages =	 {8174-8179}
+}
+@article{somerville2010developmental,
+  title={Developmental neurobiology of cognitive control and motivational systems},
+  author={Somerville, Leah H and Casey, BJ},
+  journal={Current opinion in neurobiology},
+  volume={20},
+  number={2},
+  pages={236--241},
+  year={2010},
+  publisher={Elsevier}
+}
+@article{casey2019development,
+  title={Development of the emotional brain},
+  author={Casey, BJ and Heller, Aaron S and Gee, Dylan G and Cohen, Alexandra O},
+  journal={Neuroscience letters},
+  volume={693},
+  pages={29--34},
+  year={2019},
+  publisher={Elsevier}
+}
+@article{CaseyEtAl2008,
+  title={The adolescent brain},
+  author={Casey, Betty Jo and Getz, Sarah and Galvan, Adriana},
+  journal={Developmental review},
+  volume={28},
+  number={1},
+  pages={62--77},
+  year={2008},
+  publisher={Elsevier}
+}
+
+@Article{Steinberg2010,
+  author =	 {Steinberg, Laurence},
+  title =	 {A dual systems model of adolescent risk‐taking},
+  journal =	 {Dev Psychobiol},
+  year =	 2010,
+  volume =	 52,
+  pages =	 {216-224}
+}
+
+@article{shulman2016dual,
+  title={The dual systems model: Review, reappraisal, and reaffirmation},
+  author={Shulman, Elizabeth P and Smith, Ashley R and Silva, Karol and Icenogle, Grace and Duell, Natasha and Chein, Jason and Steinberg, Laurence},
+  journal={Developmental cognitive neuroscience},
+  volume={17},
+  pages={103--117},
+  year={2016},
+  publisher={Elsevier}
+}
+
+@article{duell2016interaction,
+  title={Interaction of reward seeking and self-regulation in the prediction of risk taking: A cross-national test of the dual systems model.},
+  author={Duell, Natasha and Steinberg, Laurence and Chein, Jason and Al-Hassan, Suha M and Bacchini, Dario and Lei, Chang and Chaudhary, Nandita and Di Giunta, Laura and Dodge, Kenneth A and Fanti, Kostas A and others},
+  journal={Developmental psychology},
+  volume={52},
+  number={10},
+  pages={1593},
+  year={2016},
+  publisher={American Psychological Association}
+}
+
+
+@article{pfeifer2012arrested,
+  title={Arrested development? Reconsidering dual-systems models of brain function in adolescence and disorders},
+  author={Pfeifer, Jennifer H and Allen, Nicholas B},
+  journal={Trends in cognitive sciences},
+  volume={16},
+  number={6},
+  pages={322--329},
+  year={2012},
+  publisher={Elsevier}
+}
+
+@article{LunaWright2016,
+  title={Adolescent brain development: Implications for the juvenile criminal justice system.},
+  author={Luna, Beatriz and Wright, Catherine},
+  year={2016},
+  publisher={American Psychological Association}
+}
+@article{somerville2016searching,
+  title={Searching for signatures of brain maturity: what are we searching for?},
+  author={Somerville, Leah H},
+  journal={Neuron},
+  volume={92},
+  number={6},
+  pages={1164--1167},
+  year={2016},
+  publisher={Elsevier}
+}
+
+@article{crone2012understanding,
+  title={Understanding adolescence as a period of social--affective engagement and goal flexibility},
+  author={Crone, Eveline A and Dahl, Ronald E},
+  journal={Nature Reviews Neuroscience},
+  volume={13},
+  number={9},
+  pages={636--650},
+  year={2012},
+  publisher={Nature Publishing Group}
+}
+
+@article{luna2015integrative,
+  title={An integrative model of the maturation of cognitive control},
+  author={Luna, Beatriz and Marek, Scott and Larsen, Bart and Tervo-Clemmens, Brenden and Chahal, Rajpreet},
+  journal={Annual review of neuroscience},
+  volume={38},
+  pages={151--170},
+  year={2015},
+  publisher={Annual Reviews}
+}
+
+
+@article{cousijn2018adolescent,
+  title={Adolescent resilience to addiction: a social plasticity hypothesis},
+  author={Cousijn, Janna and Luijten, Maartje and Ewing, Sarah W Feldstein},
+  journal={The Lancet Child \& Adolescent Health},
+  volume={2},
+  number={1},
+  pages={69--78},
+  year={2018},
+  publisher={Elsevier}
+}
+
+@article{rosenbaum2020valence,
+  title={Valence biases in reinforcement learning shift across adolescence and modulate subsequent memory},
+  author={Rosenbaum, Gail and Grassie, Hannah and Hartley, Catherine},
+  year={2020},
+  publisher={PsyArXiv}
+}
+
+@article{crone2012understanding,
+  title={Understanding adolescence as a period of social--affective engagement and goal flexibility},
+  author={Crone, Eveline A and Dahl, Ronald E},
+  journal={Nature Reviews Neuroscience},
+  volume={13},
+  number={9},
+  pages={636--650},
+  year={2012},
+  publisher={Nature Publishing Group}
+}
+
+@article{davidow2016upside,
+  title={An upside to reward sensitivity: the hippocampus supports enhanced reinforcement learning in adolescence},
+  author={Davidow, Juliet Y and Foerde, Karin and Galv{\'a}n, Adriana and Shohamy, Daphna},
+  journal={Neuron},
+  volume={92},
+  number={1},
+  pages={93--99},
+  year={2016},
+  publisher={Elsevier}
+}
+
+@article{somerville2010time,
+  title={A time of change: behavioral and neural correlates of adolescent sensitivity to appetitive and aversive environmental cues},
+  author={Somerville, Leah H and Jones, Rebecca M and Casey, BJ},
+  journal={Brain and cognition},
+  volume={72},
+  number={1},
+  pages={124--133},
+  year={2010},
+  publisher={Elsevier}
+}
+
+@article{kilford2016development,
+  title={The development of social cognition in adolescence: An integrated perspective},
+  author={Kilford, Emma J and Garrett, Emily and Blakemore, Sarah-Jayne},
+  journal={Neuroscience \& Biobehavioral Reviews},
+  volume={70},
+  pages={106--120},
+  year={2016},
+  publisher={Elsevier}
+}
+
+@article{Steinberg2005,
+  title={Cognitive and affective development in adolescence},
+  author={Steinberg, Laurence},
+  journal={Trends in cognitive sciences},
+  volume={9},
+  number={2},
+  pages={69--74},
+  year={2005},
+  publisher={Elsevier}
+}
+
+
+
+%% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% 
+%% %% %% 
+%% Age Prediction Stuff
+%% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% 
+%% %% %% %% %% %% 
+@article{dosenbach2010prediction,
+  title={Prediction of individual brain maturity using fMRI},
+  author={Dosenbach, Nico UF and Nardos, Binyam and Cohen, Alexander L and Fair, Damien A and Power, Jonathan D and Church, Jessica A and Nelson, Steven M and Wig, Gagan S and Vogel, Alecia C and Lessov-Schlaggar, Christina N and others},
+  journal={Science},
+  volume={329},
+  number={5997},
+  pages={1358--1361},
+  year={2010},
+  publisher={American Association for the Advancement of Science}
+}
+@article{babyak2004you,
+  title={What you see may not be what you get: a brief, nontechnical introduction to overfitting in regression-type models},
+  author={Babyak, Michael A},
+  journal={Psychosomatic medicine},
+  volume={66},
+  number={3},
+  pages={411--421},
+  year={2004},
+  publisher={LWW}
+}
+@article{qin2015predicting,
+  title={Predicting individual brain maturity using dynamic functional connectivity},
+  author={Qin, Jian and Chen, Shan-Guang and Hu, Dewen and Zeng, Ling-Li and Fan, Yi-Ming and Chen, Xiao-Ping and Shen, Hui},
+  journal={Frontiers in human neuroscience},
+  volume={9},
+  pages={418},
+  year={2015},
+  publisher={Frontiers}
+}
+@article{jylhava2017biological,
+  title={Biological age predictors},
+  author={Jylh{\"a}v{\"a}, Juulia and Pedersen, Nancy L and H{\"a}gg, Sara},
+  journal={EBioMedicine},
+  volume={21},
+  pages={29--36},
+  year={2017},
+  publisher={Elsevier}
+}
+@article{baker1988biomarkers,
+  title={Biomarkers of aging},
+  author={Baker III, George T and Sprott, Richard L},
+  journal={Experimental gerontology},
+  volume={23},
+  number={4-5},
+  pages={223--239},
+  year={1988},
+  publisher={Elsevier}
+}
+@article{khundrakpam2015prediction,
+  title={Prediction of brain maturity based on cortical thickness at different spatial resolutions},
+  author={Khundrakpam, Budhachandra S and Tohka, Jussi and Evans, Alan C and Brain Development Cooperative Group and others},
+  journal={Neuroimage},
+  volume={111},
+  pages={350--359},
+  year={2015},
+  publisher={Elsevier}
+}
+@article{aycheh2018biological,
+  title={Biological brain age prediction using cortical thickness data: A large scale cohort study},
+  author={Aycheh, Habtamu M and Seong, Joon-Kyung and Shin, Jeong-Hyeon and Na, Duk L and Kang, Byungkon and Seo, Sang W and Sohn, Kyung-Ah},
+  journal={Frontiers in aging neuroscience},
+  volume={10},
+  pages={252},
+  year={2018},
+  publisher={Frontiers}
+}
+@article{madan2018predicting,
+  title={Predicting age from cortical structure across the lifespan},
+  author={Madan, Christopher R and Kensinger, Elizabeth A},
+  journal={European Journal of Neuroscience},
+  volume={47},
+  number={5},
+  pages={399--416},
+  year={2018},
+  publisher={Wiley Online Library}
+}
+@article{franke2012brain,
+  title={Brain maturation: predicting individual BrainAGE in children and adolescents using structural MRI},
+  author={Franke, Katja and Luders, Eileen and May, Arne and Wilke, Marko and Gaser, Christian},
+  journal={Neuroimage},
+  volume={63},
+  number={3},
+  pages={1305--1312},
+  year={2012},
+  publisher={Elsevier}
+}
+@article{cole2017predicting,
+  title={Predicting age using neuroimaging: innovative brain ageing biomarkers},
+  author={Cole, James H and Franke, Katja},
+  journal={Trends in neurosciences},
+  volume={40},
+  number={12},
+  pages={681--690},
+  year={2017},
+  publisher={Elsevier}
+}
+@article{satterthwaite2013heterogeneous,
+  title={Heterogeneous impact of motion on fundamental patterns of developmental changes in functional connectivity during youth},
+  author={Satterthwaite, Theodore D and Wolf, Daniel H and Ruparel, Kosha and Erus, Guray and Elliott, Mark A and Eickhoff, Simon B and Gennatas, Efstathios D and Jackson, Chad and Prabhakaran, Karthik and Smith, Alex and others},
+  journal={Neuroimage},
+  volume={83},
+  pages={45--57},
+  year={2013},
+  publisher={Elsevier}
+}
+%% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% 
+%% Adversity + Risk + Violent Outcomes
+%% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% 
+
+% @misc{RoperSimmons2005,
+%   title={Roper v. Simmons},
+%   booktitle={US},
+%   volume={543},
+%   pages={551},
+%   number={No. 03-633},
+%   year={2005},
+%   publisher={Supreme Court}
+% }
+
+@book{finkelhor2009children,
+  title={Children's exposure to violence: A comprehensive national survey},
+  author={Finkelhor, David},
+  year={2009},
+  publisher={Diane Publishing}
+}
+
+@article{turner2006effect,
+  title={The effect of lifetime victimization on the mental health of children and adolescents},
+  author={Turner, Heather A and Finkelhor, David and Ormrod, Richard},
+  journal={Social science \& medicine},
+  volume={62},
+  number={1},
+  pages={13--27},
+  year={2006},
+  publisher={Elsevier}
+}
+
+@article{berzin2010vulnerability,
+  title={Vulnerability in the transition to adulthood: Defining risk based on youth profiles},
+  author={Berzin, Stephanie Cosner},
+  journal={Children and youth services review},
+  volume={32},
+  number={4},
+  pages={487--495},
+  year={2010},
+  publisher={Elsevier}
+}
+
+@Article{Blair2014,
+  author =	 {Blair, J. R. and Leibenluft, M.D. and Pine, D.S.},
+  title =	 {Conduct Disorder and Callous-Unemotional Traits in Youth},
+  journal =	 {New England Journal of Medicine},
+  year =	 2014,
+  volume =	 371,
+  pages =	 {2207-2216}
+}
+
+@incollection{CompasReeslund2009,
+  author =	 {Compas, B. E., and Reeslund, K. L.},
+  title =	 {Processes of risk and resilience during adolescence},
+  booktitle =	 {Handbook of adolescent psychology: Individual bases of adolescent development},
+  editor       = {R. M. Lerner and L. Steinberg},
+  year =	 2009,
+  pages =	 {561–588}\textbf{}
+  doi= {https://doi.org/10.1002/9780470479193.adlpsy001017}
+}
+
+@Article{McLaughlinWeissman2019,
+  author =	 {McLaughlin, K. A. and Weissman, D., and Bitrán, D.},
+  title =	 {Childhood adversity and neural development: a systematic review},
+  journal =	 {Annual review of developmental psychology},
+  year =	 2019,
+  volume =	 1,
+  pages =	 {277-312}
+  doi= {https://doi.org/10.1146/annurev-devpsych-121318-084950}
+}
+
+
+
+@article{mclaughlin2019childhood,
+  title={Childhood adversity and neural development: a systematic review},
+  author={McLaughlin, Katie A and Weissman, David and Bitr{\'a}n, Debbie},
+  journal={Annual review of developmental psychology},
+  volume={1},
+  pages={277--312},
+  year={2019},
+  publisher={Annual Reviews}
+}
+
+@article{belsky2019early,
+  title={Early-life adversity accelerates child and adolescent development},
+  author={Belsky, Jay},
+  journal={Current Directions in Psychological Science},
+  volume={28},
+  number={3},
+  pages={241--246},
+  year={2019},
+  publisher={Sage Publications Sage CA: Los Angeles, CA}
+}
+
+@article{sumner2019early,
+  title={Early experiences of threat, but not deprivation, are associated with accelerated biological aging in children and adolescents},
+  author={Sumner, Jennifer A and Colich, Natalie L and Uddin, Monica and Armstrong, Don and McLaughlin, Katie A},
+  journal={Biological psychiatry},
+  volume={85},
+  number={3},
+  pages={268--278},
+  year={2019},
+  publisher={Elsevier}
+}
+
+@article{tooley2020associations,
+  title={Associations between neighborhood SES and functional brain network development},
+  author={Tooley, Ursula A and Mackey, Allyson P and Ciric, Rastko and Ruparel, Kosha and Moore, Tyler M and Gur, Ruben C and Gur, Raquel E and Satterthwaite, Theodore D and Bassett, Danielle S},
+  journal={Cerebral Cortex},
+  volume={30},
+  number={1},
+  pages={1--19},
+  year={2020},
+  publisher={Oxford University Press}
+}
+
+@article{gur2019burden,
+  title={Burden of environmental adversity associated with psychopathology, maturation, and brain behavior parameters in youths},
+  author={Gur, Raquel E and Moore, Tyler M and Rosen, Adon FG and Barzilay, Ran and Roalf, David R and Calkins, Monica E and Ruparel, Kosha and Scott, J Cobb and Almasy, Laura and Satterthwaite, Theodore D and others},
+  journal={JAMA psychiatry},
+  volume={76},
+  number={9},
+  pages={966--975},
+  year={2019},
+  publisher={American Medical Association}
+}
+
+@article{rickard2014childhood,
+  title={Why are childhood family factors associated with timing of maturation? A role for internal prediction},
+  author={Rickard, Ian J and Frankenhuis, Willem E and Nettle, Daniel},
+  journal={Perspectives on Psychological Science},
+  volume={9},
+  number={1},
+  pages={3--15},
+  year={2014},
+  publisher={Sage Publications Sage CA: Los Angeles, CA}
+}
+
+%%%%%%%%% pending organization
+
+@article{jones2014adolescent,
+  title={Adolescent-specific patterns of behavior and neural activity during social reinforcement learning},
+  author={Jones, Rebecca M and Somerville, Leah H and Li, Jian and Ruberry, Erika J and Powers, Alisa and Mehta, Natasha and Dyke, Jonathan and Casey, BJ},
+  journal={Cognitive, Affective, \& Behavioral Neuroscience},
+  volume={14},
+  number={2},
+  pages={683--697},
+  year={2014},
+  publisher={Springer}
+}
+
+
+@article{olson2007adolescents,
+  title={Adolescents’ performance on delay and probability discounting tasks: contributions of age, intelligence, executive functioning, and self-reported externalizing behavior},
+  author={Olson, Elizabeth A and Hooper, Catalina J and Collins, Paul and Luciana, Monica},
+  journal={Personality and individual differences},
+  volume={43},
+  number={7},
+  pages={1886--1897},
+  year={2007},
+  publisher={Elsevier}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Wave 4 Instruments
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@article{tolan1997assessment,
+  title={Assessment of family relationship characteristics: A measure to explain risk for antisocial behavior and depression among urban youth.},
+  author={Tolan, Patrick H and Gorman-Smith, Deborah and Huesmann, L Rowell and Zelli, Arnaldo},
+  journal={Psychological assessment},
+  volume={9},
+  number={3},
+  pages={212},
+  year={1997},
+  publisher={American Psychological Association}
+}
+
+@article{henry2004study,
+  title={The study designed by a committee: Design of the Multisite Violence Prevention Project},
+  author={Henry, David B and Farrell, Albert D and Project, The Multisite Violence Prevention},
+  journal={American journal of preventive medicine},
+  volume={26},
+  number={1},
+  pages={12--19},
+  year={2004},
+  publisher={Elsevier}
+}
+
+@book{thornberry2003gangs,
+  title={Gangs and delinquency in developmental perspective},
+  author={Thornberry, Terence P and Krohn, Marvin D and Lizotte, Alan J and Tobin, Kimberly and Smith, Carolyn A},
+  year={2003},
+  publisher={Cambridge University Press}
+}
+
+@article{shapiro1997development,
+  title={Development and factor analysis of a measure of youth attitudes toward guns and violence},
+  author={Shapiro, Jeremy P and Dorman, Rebekah L and Burkes, William M and Welker, Carolyn J and Clough, Joseph B},
+  journal={Journal of clinical child psychology},
+  volume={26},
+  number={3},
+  pages={311--320},
+  year={1997},
+  publisher={Taylor \& Francis}
+}
+
+@article{nadel1996cycle,
+  title={The cycle of violence and victimization: A study of the school-based intervention of a multidisciplinary youth violence-prevention program},
+  author={Nadel, Helen and Spellmann, Mark and Alvarez-Canino, Teresa and Lausell-Bryant, Linda and Landsberg, Gerry},
+  journal={American journal of preventive medicine},
+  volume={12},
+  number={5},
+  pages={109--119},
+  year={1996},
+  publisher={Elsevier}
+}
+
+@book{vaux1988social,
+  title={Social support: Theory, research, and intervention.},
+  author={Vaux, Alan},
+  year={1988},
+  publisher={Praeger publishers}
+}
+
+@article{nedwek1987political,
+  title={Political socialization and policy evaluation: the case of youth employment and training program},
+  author={Nedwek, Brian P},
+  journal={Evaluation and Program Planning},
+  volume={10},
+  number={1},
+  pages={35--42},
+  year={1987},
+  publisher={Elsevier}
+}
+
+@article{kazdin1983hopelessness,
+  title={Hopelessness, depression, and suicidal intent among psychiatrically disturbed inpatient children.},
+  author={Kazdin, Alan E and French, Nancy H and Unis, Alan S and Esveldt-Dawson, Karen and Sherick, Rosanna B},
+  journal={Journal of consulting and clinical psychology},
+  volume={51},
+  number={4},
+  pages={504},
+  year={1983},
+  publisher={American Psychological Association}
+}
+
+@article{bosworth1995teen,
+  title={Teen Conflict Survey. Bloomington, IN: Center for Adolescent Studies, Indiana University; 1995},
+  author={Bosworth, K and Espelage, D},
+  journal={Unpublished)[Google Scholar]},
+  year={1995}
+}
+
+@book{loeber1998antisocial,
+  title={Antisocial behavior and mental health problems: Explanatory factors in childhood and adolescence},
+  author={Loeber, Rolf and Farrington, David P and Stouthamer-Loeber, Magda and Van Kammen, Welmoet B},
+  year={1998},
+  publisher={Psychology Press}
+}
+
+@article{project2004multisite,
+  title={The multisite violence prevention project: Background and overview},
+  author={Project, Multisite Violence Prevention},
+  journal={American journal of preventive medicine},
+  volume={26},
+  number={1},
+  pages={3--11},
+  year={2004},
+  publisher={Elsevier}
+}
+
+@article{stern1995family,
+  title={Family processes and delinquency in an ecological context},
+  author={Stern, Susan B and Smith, Carolyn A},
+  journal={Social Service Review},
+  volume={69},
+  number={4},
+  pages={703--731},
+  year={1995},
+  publisher={University of Chicago Press}
+}
+
+@article{henry2001longitudinal,
+  title={Longitudinal family and peer group effects on violence and nonviolent delinquency},
+  author={Henry, David B and Tolan, Patrick H and Gorman-Smith, Deborah},
+  journal={Journal of clinical child psychology},
+  volume={30},
+  number={2},
+  pages={172--186},
+  year={2001},
+  publisher={Taylor \& Francis}
+}
+
+@article{perkins1990participation,
+  title={Participation and the social and physical environment of residential blocks: Crime and community context},
+  author={Perkins, Douglas D and Florin, Paul and Rich, Richard C and Wandersman, Abraham and Chavis, David M},
+  journal={American journal of community psychology},
+  volume={18},
+  number={1},
+  pages={83--115},
+  year={1990},
+  publisher={Springer}
+}
+
+@article{gorman2000developmental,
+  title={A developmental-ecological model of the relation of family functioning to patterns of delinquency},
+  author={Gorman-Smith, Deborah and Tolan, Patrick H and Henry, David B},
+  journal={Journal of quantitative criminology},
+  volume={16},
+  number={2},
+  pages={169--198},
+  year={2000},
+  publisher={Springer}
+}
+
+@article{nadel1996cycle,
+  title={The cycle of violence and victimization: A study of the school-based intervention of a multidisciplinary youth violence-prevention program},
+  author={Nadel, Helen and Spellmann, Mark and Alvarez-Canino, Teresa and Lausell-Bryant, Linda and Landsberg, Gerry},
+  journal={American journal of preventive medicine},
+  volume={12},
+  number={5},
+  pages={109--119},
+  year={1996},
+  publisher={Elsevier}
+}
+
+@article{leisring2014sticks,
+  title={Sticks and Stones May Break My Bones, But Abusive Text Messages Also Hurt},
+  author={Leisring, Penny A and Giumetti, Gary W},
+  journal={Partner Abuse},
+  volume={5},
+  number={3},
+  pages={323--341},
+  year={2014},
+  publisher={Springer}
+}
+
+@article{finkelhor2011juvenile,
+  title={The juvenile victimization questionnaire: 2nd revision (JVQ-R2)},
+  author={Finkelhor, David and Hamby, Sherry and Turner, Heather and Ormrod, Richard},
+  journal={Crimes Against Children Research Center, Durham},
+  year={2011}
+}
+
+@article{shepard1992abusive,
+  title={The Abusive Behavior Inventory: A measure of psychological and physical abuse},
+  author={Shepard, Melanie F and Campbell, James A},
+  journal={Journal of interpersonal violence},
+  volume={7},
+  number={3},
+  pages={291--305},
+  year={1992},
+  publisher={Sage Publications}
+}
+
+@article{watson1988development,
+  title={Development and validation of brief measures of positive and negative affect: the PANAS scales.},
+  author={Watson, David and Clark, Lee Anna and Tellegen, Auke},
+  journal={Journal of personality and social psychology},
+  volume={54},
+  number={6},
+  pages={1063},
+  year={1988},
+  publisher={American Psychological Association}
+}
+
+@article{gunter1982television,
+  title={Television viewing and perceptions of women’s roles on television and in real life},
+  author={Gunter, Barrie and Wober, Mallory},
+  journal={Current Psychological Reviews},
+  volume={2},
+  number={4},
+  pages={277--288},
+  year={1982},
+  publisher={Springer}
+}
+
+@article{bauerband2014gender,
+  title={The gender identity reflection and rumination scale: Development and psychometric evaluation},
+  author={Bauerband, L Andrew and Galupo, M Paz},
+  journal={Journal of Counseling \& Development},
+  volume={92},
+  number={2},
+  pages={219--231},
+  year={2014},
+  publisher={Wiley Online Library}
+}
+
+@article{kozee2012measuring,
+  title={Measuring transgender individuals’ comfort with gender identity and appearance: Development and validation of the Transgender Congruence Scale},
+  author={Kozee, Holly B and Tylka, Tracy L and Bauerband, L Andrew},
+  journal={Psychology of Women Quarterly},
+  volume={36},
+  number={2},
+  pages={179--196},
+  year={2012},
+  publisher={Sage Publications Sage CA: Los Angeles, CA}
+}
+
+%% RANDO REFs
+
+@misc{ElDamaty2016NIJ, 
+	author = "El Damaty, Shady",
+	title = "Pattern Classification of Neurocognitive and Socio-Emotional Developmental Factors Underlying Violent Outcomes in Adolescents",
+	year = "2016",
+	URL = "https://nij.ojp.gov/funding/awards/2016-r2-cx-0019"
+}
+
