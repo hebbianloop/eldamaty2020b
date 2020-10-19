@@ -229,7 +229,7 @@
 \def\ps@headings
   {%
   \def\@oddfoot{\vbox to 12.5\p@{\rule{\textwidth}{0.5\p@}\vss
-        \hbox to \textwidth{\helveticabold\small {Frontiers}\hfill \thepage}%
+        \hbox to \textwidth{\helveticabold\small {El Damaty et al., 2020}\hfill \thepage}%
         }}%
   \def\@evenfoot{\vbox to 12.5\p@{\rule{\textwidth}{0.5\p@}\vss
         \hbox to \textwidth{\helvetica\small {}\hfill\helveticabold\color{black}\thepage}%
@@ -474,7 +474,7 @@
   \parbox[t]{15pc}{%
     \helvetica
     \hfil
-    \flushleft  \includegraphics[width=12pc,angle=0]{./logo1.eps}
+    \flushleft
 
 
 }}
