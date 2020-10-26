@@ -1,0 +1,713 @@
+---
+title: 'Introducing a Cognitive Maturity Index'
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  pdf_document: default
+  word_document: default
+---
+
+Hi! This code is a companion to the El Damaty 2020 manuscript "Introducing a Cognitive Maturity Index and Tracking Vulnerability in Emerging Adulthood." The code is provided as-is and intended to help scholars reconstruct the results and even apply it to their own datasets. Feedback is always welcome!
+
+## Required Packages, In-line functions & Data
+```{r,warning=FALSE,message=FALSE}
+if(!require(plyr)){install.packages("plyr")}
+if(!require(dplyr)){install.packages("dplyr")}
+if(!require(knitr)){install.packages("knitr")}
+if(!require(ggplot2)){install.packages("ggplot2")}
+if(!require(psych)){install.packages("psych")}
+if(!require(arsenal)){install.packages("arsenal")}
+if(!require(lme4)){install.packages("lme4")}
+if(!require(RColorBrewer)){install.packages("RColorBrewer")}
+if(!require(psycho)){install.packages("psycho")}
+if(!require(lavaan)){install.packages("lavaan")}
+if(!require(lavaanPlot)){install.packages("lavaanPlot")}
+if(!require(tidyverse)){install.packages("tidyverse")}
+if(!require(semTools)){install.packages("semTools")}
+if(!require(glmnet)){install.packages("glmnet")}
+if(!require(MVN)){install.packages("MVN")}
+if(!require(MASS)){install.packages("MASS")}
+if(!require(DescTools)){install.packages("DescTools")}
+if(!require(simsem)){install.packages("simsem")}
+if(!require(broom)){install.packages("broom")}
+if(!require(MuMIn)){install.packages("MuMIn")}
+if(!require(caret)){install.packages("caret")}
+if(!require(pROC)){install.packages("pROC")}
+if(!require(pso)){install.packages("pso")}
+if(!require(dfoptim)){install.packages("dfoptim")}
+if(!require(latex2exp)){install.packages("latex2exp")}
+### Plotting Correlation Matrices
+plot_matrix <- function(matrix_toplot){
+corrplot::corrplot(matrix_toplot, is.corr = FALSE,
+               type = 'lower',
+               order = "original",
+               tl.col='black', tl.cex=.75)
+}
+```
+
+## Import Data into Frame
+```{r}
+adsdf<-read.table('~/Projects/eldamaty2020b/analysis/R_covariates.txt',sep="\t",header=TRUE)
+```
+
+### Defining Data Frame for Behavioral Modeling
+```{r}
+# grab behavioral data
+beh.df <- adsdf[,1:127]
+# exclude high LIE scale participants, high LIE is associated with low construct validity (participants do not answer faithfully)
+beh.df[which(adsdf$dusi_lie > 6),] <- NA
+# remove sex of excluded subjects at each wave
+beh.df$sex[is.na(beh.df$age)] <- NA
+beh.df$race[is.na(beh.df$age)] <- NA
+beh.df$iq_comp[is.na(beh.df$age)] <- NA
+beh.df$anthro_bmi[is.na(beh.df$age)] <- NA
+beh.df$dusi_violencerisk[is.na(beh.df$age)] <- NA
+beh.df$bis[is.na(beh.df$age)] <- NA
+beh.df$bas_drive[is.na(beh.df$age)] <- NA
+beh.df$bas_funseeking[is.na(beh.df$age)] <- NA
+beh.df$bas_rewres[is.na(beh.df$age)] <- NA
+# labels
+beh.df$sex <- factor(beh.df$sex,
+                      levels=c(0,1,NA),
+                      labels=c("Female","Male"))
+beh.df$race <- factor(beh.df$race,
+                        levels = c(1,2,3,4),
+                        labels = c('White','Black','Hispanic','Other'))
+```
+
+## Measures by Wave
+```{r}
+table_summary <- tableby(wave ~ sex + age + race + anthro_bmi + iq_comp + dusi_violencerisk + bis + bas_drive + bas_funseeking + bas_rewres ,data=beh.df,total=FALSE)
+summary(table_summary)
+```
+
+## Age Correlated Variables
+Models of neurocognitive development propose an increase in inhibitory, reward and emotion processing, however do we see evidence that mirrors these hypothesies in our sample? A cross-correlation between age shows several of our neuropyschological variables exhibit developmental effects. This helps motivate confirmatory factor analysis to identify latent factors underlying the (age-related!) cognitive development of impulse control, reward sensitivity and emotion processing from this finding.
+```{r}
+# compute correlation 
+behavior_correlation <- corr.test(beh.df[,6:127],adjust="holm",alpha=0.05,)
+# extract the correlations with dusi lie scale
+age_corr <- as.array(behavior_correlation$r[,c("age")])
+corr_df <- data.frame(age_corr)
+# create a variable for the row names (tidy!) and remove redundant row names (should be none but good practice)
+corr_df$vars <- rownames(corr_df)
+rownames(corr_df) <- NULL
+# look at only significant correlations
+corr_df <- subset(corr_df, age_corr > 0.15 | age_corr < -0.15)
+# print top 10
+head(corr_df,10)
+# visualize ranked
+ggplot(corr_df) +
+    geom_point(aes(x = age_corr, y = reorder(vars, age_corr)))
+```
+
+# Behavioral Measures of Neurocognitive Development
+## Confirmatory Factor Analysis : Impulsivity
+The inhibitory control latent factor was derived from confirmatory factor analysis on Go/No-Go task performance and self-reported inhibitory control measured with the Behavioral Inhibition Scale. The fitted structural relations were significant compared to a null model with 0 factor loadings between all measures, residual covariances, and the estimated latent variable. Inhibitory control was manifested as greater sensitivity to Go vs NoGo signals measured by d prime, a lower Go response bias measured by the natural log of Beta, higher behavioral inhibition, and less variable reaction times to both Go and No-Go stimuli. Correct and incorrect response time variation to Go/No-Go stimuli showed a significant covariation and improved the fit of the model. Greater variation in response time to targets was correlated with greater variation in incorrect response times, suggesting lower response control during target and lure presentation. Higher BIS was correlated with greater response times to No-Go stimuli. Overall the results suggest that inhibitory control is reflected in overall behavioral inhibition, more careful responses and greater discrimination between targets and No-Go stimuli during the continuous response task. Inhibitory control was observed to reliably predict older age, suggesting that cognitive maturity also involves development of inhibitory control.
+```{r}
+cfa.df <- beh.df[,c("age","gonogo.dprime","gonogo.c","gonogo.Aprime","gonogo.beta",
+                   "bis","gonogo.Correct.Go.rt", "gonogo.Correct.Go.rt.std", "gonogo.Incorrect.Go.rt", "gonogo.Incorrect.Go.rt.std",
+                   "gonogo.Correct.Go.p","gonogo.Incorrect.Go.p", "gonogo.Incorrect.NoGo.p","gonogo.Correct.NoGo.p")]
+cfa.df <- as.data.frame(scale(cfa.df))
+cfa.df$gonogo.beta <- log(cfa.df$gonogo.beta)
+cfa.df$age <- beh.df$age
+# Define the initial measurement model
+cfa.imp <- 
+           ' 
+           # Measurement model
+           inhibitory_control =~ gonogo.dprime + gonogo.beta + gonogo.Incorrect.Go.rt.std + gonogo.Correct.Go.rt.std + bis
+           # free parameters
+            # response time
+
+            # task performance
+            gonogo.dprime	~~	gonogo.beta
+            gonogo.dprime	~~	gonogo.Correct.Go.rt.std
+            gonogo.Incorrect.Go.rt.std	~~	gonogo.Correct.Go.rt.std
+            
+            age ~ inhibitory_control
+           '
+# Fit the structural equation model and display paths
+fit.cfa.imp <- sem(cfa.imp, data = cfa.df, missing="fiml", se="robust", std.lv=TRUE)
+semPlot::semPaths(fit.cfa.imp,what='std',fade=FALSE)
+summary(fit.cfa.imp, fit.measures=TRUE)
+# display modification indices
+modificationindices(fit.cfa.imp, minimum.value = 5)
+plot_matrix(residuals(fit.cfa.imp, type="cor")$cov)
+# display standardized values
+standardizedSolution(fit.cfa.imp, type = "std.all", se = TRUE, zstat = TRUE, 
+                     pvalue = TRUE, ci = TRUE, level = 0.95, cov.std = TRUE, 
+                     remove.eq = TRUE, remove.ineq = TRUE, remove.def = FALSE, 
+                     partable = NULL, GLIST = NULL, est = NULL,
+                     output = "data.frame")
+```
+
+Here we relate reaction time with target discrimination, to better understand task performance.
+```{r}
+fit.lm.model <- lm(gonogo.dprime ~ gonogo.Correct.Go.rt * gonogo.Incorrect.Go.rt, data=cfa.df)
+summary(fit.lm.model)
+ mvn(data=cfa.df,univariatePlot="qqplot")
+```
+### Age vs Inhibitory Control
+Extract the latent factor estimates for each participant so we can explore associations with other covariates.
+```{r}
+# extract social adversity latent factor
+idx <- lavInspect(fit.cfa.imp,"case.idx")
+scores <- lavPredict(fit.cfa.imp,type='lv')
+for (fs in colnames(scores)) {
+  beh.df[idx, fs] <- scores[ ,fs]
+}
+ov <- lavPredict(fit.cfa.imp,type="ov")
+#beh.df$age_imp.pred <- ov[,"age"]
+```
+Next we visualize the regression for age and inhibitory control
+```{r}
+# graph predictions
+p <- ggplot(beh.df,aes(x=age, y=inhibitory_control)) + 
+geom_smooth(method="lm",color="black") + geom_line(aes(group=subjectid),color="gray",size=0.1)  + geom_point(aes(group=subjectid,color=sex),size=0.5)
+p + 
+  # add color
+  #scale_color_gradient(low="#3e6fab",high="#683470") + 
+  # add formatting
+  theme(plot.title = element_text(size=24, face = "bold", hjust = 0.5), legend.title = element_blank(), axis.title.y = element_text(size = 16, face = "bold"), axis.title.x = element_text(size = 24, face = "bold"),axis.text.x = element_text(size = 18,  face = "bold"),axis.text.y = element_text(size = 18, face = "bold")) +
+   # add label axes and title
+   labs(title="Age-Related Change in Impulse Control",y="Inhibitory Control", x = "Observed Age")  
+```
+### Post Hoc Analysis: Does Sex interact with Age?
+No effect of sex
+```{r}
+age.sex.model <- lm( inhibitory_control ~ sex*age,
+                  data=beh.df,na.action = na.exclude)
+summary(age.sex.model)
+```
+
+## Confirmatory Factor Analysis : Risk/Reward Processing
+Risk/Reward processing was estimated as a latent factor explained by risk taking in the wheel of fortune task and sensitivity to immediate rewards measured by temporal reward discounting. Greater risk taking for immediate rewards was instantiated with greater and faster resposne times to high risk decisions, slower response times to low risk decisions, and lastly a preference for immediate rewards. It is important to note that participants that received lower winnings responded more quickly for high risk decisions. Risk/reward processing was observed to significantly decrease with age.
+```{r}
+cfa.df <- beh.df[,c("wof_hr_decision_percent_thisrun", "wof_hr_mean_rt_thisrun", "wof_lr_mean_rt_thisrun","wof_total_winnings_thisrun","wof_cumulative_winnings_sincefirstrun","bas_rewres","bas_funseeking","temporal_discounting_auc")]
+cfa.df <- as.data.frame(scale(cfa.df))
+cfa.df$age <- beh.df$age
+# Define the initial measurement model
+cfa.rew <- 
+           ' 
+           # Measurement model
+           reward_proc =~ wof_hr_decision_percent_thisrun + wof_hr_mean_rt_thisrun + wof_lr_mean_rt_thisrun + wof_cumulative_winnings_sincefirstrun + temporal_discounting_auc 
+           # free parameters
+           	wof_hr_mean_rt_thisrun	~~	wof_lr_mean_rt_thisrun
+           	wof_hr_decision_percent_thisrun	~~	wof_hr_mean_rt_thisrun	
+           # regression
+           age ~ reward_proc
+           '
+# Fit the structural equation model and display paths
+fit.cfa.rew <- sem(cfa.rew, data = cfa.df, missing="fiml", se="robust", std.lv=TRUE)
+semPlot::semPaths(fit.cfa.rew,what='std',fade=FALSE)
+summary(fit.cfa.rew, fit.measures=TRUE)
+# display modification indices
+modificationindices(fit.cfa.rew, minimum.value = 2)
+plot_matrix(residuals(fit.cfa.rew, type="cor")$cov)
+# display standardized values
+standardizedSolution(fit.cfa.rew, type = "std.all", se = TRUE, zstat = TRUE, 
+                     pvalue = TRUE, ci = TRUE, level = 0.95, cov.std = TRUE, 
+                     remove.eq = TRUE, remove.ineq = TRUE, remove.def = FALSE, 
+                     partable = NULL, GLIST = NULL, est = NULL,
+                     output = "data.frame")
+```
+### Age vs Risk/Reward Processing
+Again, we extract the predicted latent variables for each participant.
+```{r}
+# extract risk/reward processing latent factor
+idx <- lavInspect(fit.cfa.rew,"case.idx")
+scores <- lavPredict(fit.cfa.rew,type='lv')
+for (fs in colnames(scores)) {
+  beh.df[idx, fs] <- scores[ ,fs]
+}
+ov <- lavPredict(fit.cfa.rew,type="ov")
+#beh.df$age_rew.pred <- ov[,"age"]
+```
+
+Does Reward Processing change with Age?
+```{r}
+age.model <- lm(reward_proc ~ age,
+                  data=beh.df,na.action = na.exclude)
+summary(age.model)
+#beh.df$age.rew.pred <- predict(age.model)
+```
+Next we visualize the regression for age and risk/reward processing.
+```{r}
+# graph predictions
+p <- ggplot(beh.df,aes(x=age, y=reward_proc)) + 
+geom_smooth(method="lm",color="black") + geom_line(aes(group=subjectid),color="gray",size=0.1)  + geom_point(aes(group=subjectid,color=sex),size=0.5)
+p + 
+  # add formatting
+  theme(plot.title = element_text(size=24, face = "bold", hjust = 0.5), legend.title = element_blank(), axis.title.y = element_text(size = 16, face = "bold"), axis.title.x = element_text(size = 24, face = "bold"),axis.text.x = element_text(size = 18,  face = "bold"),axis.text.y = element_text(size = 18, face = "bold")) +
+   # add label axes and title
+   labs(title="Age-Related Change in Risk/Reward",y="Risk/Reward Processing", x = "Observed Age")  
+```
+### Post Hoc Analyses: Does Age-related Development of Risk/Reward Processing Interact with Sex?
+No effect of sex.
+```{r}
+age.sex.model <- lm(reward_proc ~ ses,
+                  data=beh.df,na.action = na.exclude)
+summary(age.sex.model)
+#beh.df$age.sex_rew.pred <- predict(age.sex.model)
+```
+
+## Confirmatory Factor Analysis : Salient Emotion Processing
+Emotion recognition was identified as a latent factor composed of reaction time and accuracy for identifying positive and negative emotions. Higher emotion recognition processing was driven by greater accuracy in identifying negative compared to positive emotions. Greater salient emotion recognition was related to faster reaction time performance for all emotions but with longer RTs for positive emotions suggesting longer processing time. Salient emotion recognition increased significantly with age.
+```{r}
+cfa.df <- beh.df[,c("efr_negative_mean_rt","efr_negative_sd_rt" ,"efr_negative_acc", 
+                   "efr_neutral_mean_rt","efr_neutral_sd_rt","efr_neutral_acc",
+                   "efr_happiness_meanrt", "efr_happiness_sd_rt", "efr_happiness_acc",
+                   "dusi_mooddisorder")]
+cfa.df <- as.data.frame(scale(cfa.df))
+cfa.df$age <- beh.df$age
+# Define the initial measurement model
+cfa.emo <- 
+           ' 
+           # Measurement model
+           neg_emot =~  efr_negative_acc + efr_negative_mean_rt + efr_negative_sd_rt 
+           pos_emot =~  efr_happiness_acc + efr_happiness_meanrt + efr_happiness_sd_rt
+           
+           
+           neg_emot ~~ pos_emot
+           
+           # free parameters
+           efr_negative_mean_rt	~~	efr_happiness_meanrt
+           efr_negative_acc	~~	efr_happiness_acc
+           efr_happiness_meanrt	~~	efr_happiness_sd_rt
+           efr_negative_mean_rt ~~ efr_negative_sd_rt
+           
+           # regression
+           age ~ neg_emot
+           age ~ pos_emot
+           #
+           '
+# Fit the structural equation model and display paths
+fit.cfa.emo <- sem(cfa.emo, data = cfa.df, missing="fiml", se="robust", std.lv=TRUE)
+semPlot::semPaths(fit.cfa.emo,what='std',fade=FALSE)
+summary(fit.cfa.emo, fit.measures=TRUE)
+# display modification indices
+modificationindices(fit.cfa.emo, minimum.value = 5)
+plot_matrix(residuals(fit.cfa.emo, type="cor")$cov)
+# display standardized values
+standardizedSolution(fit.cfa.emo, type = "std.all", se = TRUE, zstat = TRUE, 
+                     pvalue = TRUE, ci = TRUE, level = 0.95, cov.std = TRUE, 
+                     remove.eq = TRUE, remove.ineq = TRUE, remove.def = FALSE, 
+                     partable = NULL, GLIST = NULL, est = NULL,
+                     output = "data.frame")
+```
+### Age vs Emotional Face Recognition Performance
+Extract emotion recognition latent factor.
+```{r}
+# extract social adversity latent factor
+idx <- lavInspect(fit.cfa.emo,"case.idx")
+scores <- lavPredict(fit.cfa.emo,type='lv')
+for (fs in colnames(scores)) {
+  beh.df[idx, fs] <- scores[ ,fs]
+}
+ov <- lavPredict(fit.cfa.emo,type="ov")
+#beh.df$age_emo.pred <- ov[,"age"]
+```
+Next we visualize the regression for age and Emotion Processing
+```{r}
+# graph predictions
+p <- ggplot(beh.df,aes(x=age, y=neg_emot)) + 
+geom_smooth(method="lm",color="black") + geom_line(aes(group=subjectid),color="gray",size=0.1)  + geom_point(aes(group=subjectid,color=sex),size=0.5)
+p + 
+  # add color
+  # add formatting
+  theme(plot.title = element_text(size=24, face = "bold", hjust = 0.5), legend.title = element_blank(), axis.title.y = element_text(size = 16, face = "bold"), axis.title.x = element_text(size = 24, face = "bold"),axis.text.x = element_text(size = 18,  face = "bold"),axis.text.y = element_text(size = 18, face = "bold")) +
+   # add label axes and title
+   labs(title="Development of Emotion Processing",y="Negative Emotion Recog.", x = "Observed Age")  
+# graph predictions
+p <- ggplot(beh.df,aes(x=age, y=pos_emot)) + 
+geom_smooth(method="lm",color="black") + geom_line(aes(group=subjectid),color="gray",size=0.1)  + geom_point(aes(group=subjectid,color=sex),size=0.5)
+p + 
+  # add color
+  # add formatting
+  theme(plot.title = element_text(size=24, face = "bold", hjust = 0.5), legend.title = element_blank(), axis.title.y = element_text(size = 16, face = "bold"), axis.title.x = element_text(size = 24, face = "bold"),axis.text.x = element_text(size = 18,  face = "bold"),axis.text.y = element_text(size = 18, face = "bold")) +
+   # add label axes and title
+   labs(title="Development of Emotion Processing",y="Positive Emotion Recog.", x = "Observed Age")  
+```
+### Post Hoc Analyses :: Does Age-Related Change in Emotional Face Recognition Covary with Sex?
+Males and females show significant differences in emotional face recognition performance. Females tend to perform slightly better than Males.
+```{r}
+age.sex.model <- lmerTest::lmer(age ~ sex*neg_emot + (1|subjectid) ,
+                  data=beh.df,REML=FALSE,na.action = na.exclude)
+summary(age.sex.model)
+beh.df$age.sex_neg.emo.pred <- predict(age.sex.model)
+```
+```{r}
+age.sex.model <- lm(neg_emot ~ ses,
+                  data=beh.df,na.action = na.exclude)
+summary(age.sex.model)
+```
+```{r}
+age.sex.model <- lm(pos_emot ~ ses,
+                  data=beh.df,na.action = na.exclude)
+summary(age.sex.model)
+```
+```{r}
+age.sex.model <- lm(neg_emot ~ sex+pds+anthro_bmi+ses,
+                  data=beh.df,na.action = na.exclude)
+summary(age.sex.model)
+age.sex.model <- lm(pos_emot ~ sex+pds+anthro_bmi+ses,
+                  data=beh.df,na.action = na.exclude)
+summary(age.sex.model)
+```
+```{r}
+age.sex.model <- lm(pos_emot ~ sex,
+                  data=beh.df,na.action = na.exclude)
+summary(age.sex.model)
+```
+
+## Complete Structural Equation Model of Neurocognitive Latent Factors
+Let us now analyze the relationship between the different cognitive skills, note how we perform this analysis iteratively - building the small components first and scaling up to a large interaction model that allows us to see how inhibitory control, risk/reward assessment and emotion processing relate to each other.
+```{r}
+cfa.df <- beh.df[,c("gonogo.dprime","gonogo.c","gonogo.Aprime","gonogo.beta",
+                   "bis","gonogo.Correct.Go.rt", "gonogo.Correct.Go.rt.std", "gonogo.Incorrect.Go.rt", "gonogo.Incorrect.Go.rt.std",
+                   "gonogo.Correct.Go.p","gonogo.Incorrect.Go.p", "gonogo.Incorrect.NoGo.p","gonogo.Correct.NoGo.p",
+                   "efr_negative_mean_rt","efr_negative_sd_rt" ,"efr_negative_acc", 
+                   "efr_neutral_mean_rt","efr_neutral_sd_rt","efr_neutral_acc",
+                   "efr_happiness_meanrt", "efr_happiness_sd_rt", "efr_happiness_acc",
+                   "wof_hr_decision_percent_thisrun", "wof_hr_mean_rt_thisrun", "wof_lr_mean_rt_thisrun","wof_total_winnings_thisrun","wof_cumulative_winnings_sincefirstrun","bas_rewres","bas_funseeking","temporal_discounting_auc")]
+cfa.df <- as.data.frame(scale(cfa.df))
+cfa.df$gonogo.beta <- log(cfa.df$gonogo.beta)
+cfa.df$age <- beh.df$age
+# Define the initial measurement model
+cfa.all <- 
+           ' 
+           # Measurement model
+           
+           neg_emot =~  efr_negative_acc + efr_negative_mean_rt + efr_negative_sd_rt 
+           pos_emot =~  efr_happiness_acc + efr_happiness_meanrt + efr_happiness_sd_rt
+           reward_proc =~ wof_hr_decision_percent_thisrun + wof_hr_mean_rt_thisrun + wof_lr_mean_rt_thisrun + wof_cumulative_winnings_sincefirstrun + temporal_discounting_auc 
+           inhibitory_control =~ gonogo.dprime + gonogo.beta + gonogo.Incorrect.Go.rt.std + gonogo.Correct.Go.rt.std + bis
+           
+           # emotion recognition: free parameters
+           efr_negative_mean_rt	~~	efr_happiness_meanrt
+           efr_negative_acc	~~	efr_happiness_acc
+           efr_happiness_meanrt	~~	efr_happiness_sd_rt
+           efr_negative_mean_rt ~~ efr_negative_sd_rt
+           neg_emot ~~ pos_emot
+
+
+           # risk/reward: free parameters
+           	wof_hr_mean_rt_thisrun	~~	wof_lr_mean_rt_thisrun
+           	wof_hr_mean_rt_thisrun	~~	wof_cumulative_winnings_sincefirstrun
+           
+           # inhibitory control: free parameters
+            gonogo.dprime	~~	gonogo.beta
+            gonogo.dprime	~~	gonogo.Correct.Go.rt.std
+            gonogo.Incorrect.Go.rt.std	~~	gonogo.Correct.Go.rt.std
+           
+           # regression
+           neg_emot ~ inhibitory_control
+           pos_emot ~ inhibitory_control
+           reward_proc ~ pos_emot + neg_emot
+           reward_proc ~ inhibitory_control
+           #
+           '
+# Fit the structural equation model and display paths
+fit.cfa.all <- sem(cfa.all, data = cfa.df, missing="fiml", std.lv=TRUE)
+summary(fit.cfa.all, fit.measures=TRUE)
+# display modification indices
+modificationindices(fit.cfa.all, minimum.value = 5)
+plot_matrix(residuals(fit.cfa.all, type="cor")$cov)
+# display standardized values
+standardizedSolution(fit.cfa.all, type = "std.all", se = TRUE, zstat = TRUE, 
+                     pvalue = TRUE, ci = TRUE, level = 0.95, cov.std = TRUE, 
+                     remove.eq = TRUE, remove.ineq = TRUE, remove.def = FALSE, 
+                     partable = NULL, GLIST = NULL, est = NULL,
+                     output = "data.frame")
+```
+```{r}
+semPlot::semPaths(fit.cfa.all,what='std',fade=TRUE ,whatLabels='std',style="lisrel",edge.label.cex = 0.5,layout='tree2',intercepts=FALSE,residuals=FALSE,nodeLabels = c("NEacc","NEmrt","NEsdrt","PEacc","PEmrt","PEsdrt","HRp","HRmrt","LRmrt","Wins","TDauc","d'",TeX("$ln (\\beta)$"),"FAsdrt","Hsdrt","BIS","ENLF","EPLF","RRLF","ICLF"),rotation=2,sizeMan=4,curvePivot=TRUE,curve=1.2,sizeLat=7, edge.color="black",edge.width=0.5,label.cex=1,border.width=2.35,combineGroups=FALSE,groups="latents",color=c("black","white","gray","#ded9ca"), bifactor = "g")
+```
+
+# Age Prediction
+Does cognitive skill predict your age? We saw evidence that individual cognitive latent factors were correlated with age, however can we reliably predict cognitive age using a weighted aggregation of these cognitive skills? Regularized regression allows us to make a best guess at age while actively minimizing the bias attributed to redundant predictors. Let's test this out on the original behavioral data (prior to estimating latent factors).
+
+## Raw Behavioral Data
+Scored performance metrics and survey responses were used as unaltered predictors of age to compare against latent factor estimates.
+```{r}
+# add covariates of interest
+beh.df.rr <- beh.df[,c("subjectid","age","gonogo.dprime","gonogo.beta","bis","gonogo.Correct.Go.rt.std","gonogo.Incorrect.Go.rt.std","efr_happiness_meanrt", "efr_happiness_sd_rt", "efr_happiness_acc","efr_negative_acc","efr_negative_sd_rt","efr_negative_mean_rt","wof_hr_decision_percent_thisrun","wof_hr_mean_rt_thisrun","wof_lr_mean_rt_thisrun","wof_cumulative_winnings_sincefirstrun","temporal_discounting_auc")]
+# we cannot have any missing data for LASSO (imputation is an option here as well)
+beh.df.rr <- beh.df.rr[complete.cases(beh.df.rr),]
+# 50% Split into test and retest
+smp_size <- floor(0.50 * nrow(beh.df.rr))
+## set the seed to make your partition reproducible
+set.seed(123)
+## get the indices for train and test datasets so we can model separately
+train_ind <- sample(seq_len(nrow(beh.df.rr)), size = smp_size)
+train <- beh.df.rr[train_ind, ]
+test <- beh.df.rr[-train_ind, ]
+```
+
+### Raw Behavioral Data (fitting)
+```{r}
+#############
+## TRAINING
+#############
+# define prediction and outcome variables
+# -- predictors are emotion processing, reward processing and inhibitory control
+# -- outcome is age
+train_outcome <- as.matrix(subset(train,select = c(age)))
+train_predictors <- as.matrix(subset(train,select = -c(subjectid,age)))
+test_outcome <- as.matrix(subset(test,select = c(age)))
+test_predictors <- as.matrix(subset(test,select = -c(subjectid,age)))
+# we perform N-1 fold cross validation with an alpha 0, regularized regression
+# -- you can mess with this to increase/decrease R^2 (by just a little though)
+cv.glmnet.fit <- cv.glmnet(train_predictors,train_outcome,family='gaussian',alpha = 0,nfold=1000)
+# estimate the r squared of the fit
+print('Cross-Validation on Training Set, Estimated R-Squared')
+rsq = 1 - cv.glmnet.fit$cvm/var(train_outcome[,1])
+plot(cv.glmnet.fit$lambda,rsq)
+lambda_min <- cv.glmnet.fit$lambda.min
+max(rsq)
+# now that we've cross-validated - now we estimate optimal model
+glmnet.fit <- glmnet(train_predictors, train_outcome, family="gaussian", alpha = 0, lambda = lambda_min)
+```
+
+Let's plot the results of the regularized regression by showing the relative importance (weights) of each of the predictors!
+```{r}
+# plot coefficients
+# extract the significant coefficients as an array
+sig_coef <- as.array(coef(glmnet.fit))
+# define data frame for plotting
+plot_df <- data.frame(sig_coef)
+# 0 out non significant coefs for ease on eyes, X1 is an arbitrary col name set by R
+plot_df <- data.frame(subset(plot_df,s0>0 | s0<0))
+# visualize ranked
+ggplot(plot_df) +
+    geom_point(aes(x = s0, y = reorder(rownames(plot_df),s0)),size=5) +
+  # add formatting
+  theme(plot.title = element_text(size=18, face = "bold"), axis.title.y = element_text(size = 16, face = "bold"), axis.title.x = element_text(size = 24, face = "bold"),axis.text.x = element_text(size = 12,  face = "bold"),axis.text.y = element_text(size = 12, face = "bold")) +
+   # add label axes and title
+   labs(title="Age Prediction with Regularized Reggression",x="Estm. Coefficients", y = "Cog. Metrics")  
+knit_print(plot_df)
+```
+
+### Raw Behavioral Data (Prediction & Plotting)
+```{r}
+# let predict age for train and test datasets!
+train$predicted.age <- predict(glmnet.fit, s =lambda_min, newx = train_predictors)
+test$predicted.age <- predict(glmnet.fit, s =lambda_min, newx = test_predictors)
+# graph predictions
+p <- ggplot(test,aes(x=age, y=predicted.age)) + 
+geom_smooth(method="lm",color="black") + geom_line(aes(group=subjectid),color="gray",size=0.1)  + geom_point(aes(group=subjectid),size=0.5)
+p + 
+  # add formatting
+  theme(plot.title = element_text(size=24, face = "bold", hjust = 0.5), legend.title = element_blank(), axis.title.y = element_text(size = 16, face = "bold"), axis.title.x = element_text(size = 24, face = "bold"),axis.text.x = element_text(size = 18,  face = "bold"),axis.text.y = element_text(size = 18, face = "bold")) +
+   # add label axes and title
+   labs(title="Age Prediction with Behavior (Test)",x="Observed Age", y = "Predicted Age") 
+# graph predictions
+p <- ggplot(train,aes(x=age, y=predicted.age)) + 
+geom_smooth(method="lm",color="black") + geom_line(aes(group=subjectid),color="gray",size=0.1)  + geom_point(aes(group=subjectid),size=0.5)
+p + 
+  # add formatting
+  theme(plot.title = element_text(size=24, face = "bold", hjust = 0.5), legend.title = element_blank(), axis.title.y = element_text(size = 16, face = "bold"), axis.title.x = element_text(size = 24, face = "bold"),axis.text.x = element_text(size = 18,  face = "bold"),axis.text.y = element_text(size = 18, face = "bold")) +
+   # add label axes and title
+   labs(title="Age Prediction with Behavior (Train)",x="Observed Age", y = "Predicted Age") 
+```
+
+## Cognitive Latent Factors
+We've shown that the original cognitive performance metrics (prior to CFA estimation of latent factors) does not do too great at predicting age. Can we improve this by using the latent factors as predictors?
+```{r}
+# redefine reg regression dataframe with required predictors
+beh.df.rr <- beh.df[,c("subjectid","age")]
+beh.df.rr$neg_emot <- beh.df$neg_emot
+beh.df.rr$pos_emot <- beh.df$pos_emot
+beh.df.rr$reward_proc <- beh.df$reward_proc
+beh.df.rr$inhibitory_control <- beh.df$inhibitory_control
+# we cannot have any missing data for LASSO (imputation is a more sophisticated option here as well)
+beh.df.rr.c <- beh.df.rr[complete.cases(beh.df.rr),]
+# Split into test and retest
+## 50% of the sample size
+smp_size <- floor(0.50 * nrow(beh.df.rr.c))
+## set the seed to make your partition reproducible
+set.seed(123)
+train_ind <- sample(seq_len(nrow(beh.df.rr.c)), size = smp_size)
+train <- beh.df.rr.c[train_ind, ]
+test <- beh.df.rr.c[-train_ind, ]
+```
+
+### Cognitive Latent Factors (fitting)
+```{r}
+########################
+## TRAINING
+########################
+# define prediction and outcome variables
+train_outcome <- as.matrix(subset(train,select = c(age)))
+train_predictors <- as.matrix(subset(train,select = -c(subjectid,age)))
+test_outcome <- as.matrix(subset(test,select = c(age)))
+test_predictors <- as.matrix(subset(test,select = -c(subjectid,age)))
+# we perform N-1 fold cross validation with an alpha 0 to denote ridge regression
+# we set nfold to 1000 to ensure convergence
+cv.glmnet.fit <- cv.glmnet(train_predictors,train_outcome,family='gaussian',alpha = 0,nfold=1000)
+# estimate the r squared of the fit
+print('Cross-Validation on Training Set, Estimated R-Squared')
+rsq = 1 - cv.glmnet.fit$cvm/var(train_outcome[,1])
+plot(cv.glmnet.fit$lambda,rsq)
+lambda_min <- cv.glmnet.fit$lambda.min
+max(rsq)
+# optimized model
+glmnet.fit <- glmnet(train_predictors, train_outcome, family="gaussian", alpha = 0, lambda = lambda_min)
+```
+
+Again, we can rank the predictors by importance
+```{r}
+################################################################################################################
+# plot coefficients
+# extract the significant coefficients as an array
+sig_coef <- as.array(coef(glmnet.fit))
+# define data frame for plotting
+plot_df <- data.frame(sig_coef)
+# 0 out non significant coefs for ease on eyes, X1 is an arbitrary col name set by R
+plot_df <- data.frame(subset(plot_df,s0>0 | s0<0))
+# visualize ranked
+ggplot(plot_df) +
+    geom_point(aes(x = s0, y = reorder(rownames(plot_df),s0)),size=5) +
+  # add formatting
+  theme(plot.title = element_text(size=18, face = "bold"), axis.title.y = element_text(size = 16, face = "bold"), axis.title.x = element_text(size = 24, face = "bold"),axis.text.x = element_text(size = 12,  face = "bold"),axis.text.y = element_text(size = 12, face = "bold")) +
+   # add label axes and title
+   labs(title="Reg. Reg. Age Pred.",x="Estm. Coefficients", y = "Cog. Metrics")  
+knit_print(plot_df)
+```
+
+### Cognitive Latent Factors (Age-Prediction)
+Great R^2! Ok, let's see how age prediction pans out and plot the result!
+```{r}
+# Prediction
+train$predicted.age <- predict(glmnet.fit, s =lambda_min, newx = train_predictors)
+test$predicted.age <- predict(glmnet.fit, s =lambda_min, newx = test_predictors)
+# graph predictions
+p <- ggplot(test,aes(x=age, y=predicted.age)) + 
+geom_smooth(method="lm",color="black") + geom_line(aes(group=subjectid),color="gray",size=0.1)  + geom_point(aes(group=subjectid),size=0.5)
+p + 
+  # add formatting
+  theme(plot.title = element_text(size=24, face = "bold", hjust = 0.5), legend.title = element_blank(), axis.title.y = element_text(size = 16, face = "bold"), axis.title.x = element_text(size = 24, face = "bold"),axis.text.x = element_text(size = 18,  face = "bold"),axis.text.y = element_text(size = 18, face = "bold")) +
+   # add label axes and title
+   labs(title="Age Prediction with Cognitive Latent Factors",x="Observed Age", y = "Predicted Age") 
+# graph predictions
+p <- ggplot(train,aes(x=age, y=predicted.age)) + 
+geom_smooth(method="lm",color="black") + geom_line(aes(group=subjectid),color="gray",size=0.1)  + geom_point(aes(group=subjectid),size=0.5)
+p + 
+  # add formatting
+  theme(plot.title = element_text(size=24, face = "bold", hjust = 0.5), legend.title = element_blank(), axis.title.y = element_text(size = 16, face = "bold"), axis.title.x = element_text(size = 24, face = "bold"),axis.text.x = element_text(size = 18,  face = "bold"),axis.text.y = element_text(size = 18, face = "bold")) 
+   # add label axes and title
+   labs(title="Age Prediction with Cognitive Latent Factors",x="Observed Age", y = "Predicted Age") 
+   print("Lambda Minimum Estimate")
+   print(lambda_min)
+```
+
+#### Save Results to Work Space !
+```{r}
+### grab all subjects in test to merge age estimates across train and test
+test <- beh.df.rr.c
+test_predictors <- as.matrix(subset(test,select = -c(subjectid,age)))
+beh.df.rr.c$predicted.age <- predict(glmnet.fit, s =lambda_min, newx = test_predictors)
+## a little shiffting around to format a nice frame!
+beh.df.rr$predicted.age[complete.cases(beh.df.rr)] <- beh.df.rr.c$predicted.age
+beh.lv.df <- beh.df.rr
+beh.lv.df$beh.predicted.age <- beh.df.rr$predicted.age
+# save to R data object
+# TODO update path names
+save(beh.lv.df,file='~/Projects/eldamaty2020b/analysis/cmi.RData')
+## clean up workspace
+rm(list=ls())
+```
+
+# Cognitive Maturity Index and Violence Risk
+How does the estimated maturity relative to peers relate to violence risk?
+
+## Reformat Data Frames for Maturity Index Estimation and Modeling
+Let's begin by reinitializing our workspace with the necessary variables.
+```{r}
+##
+adsdf<-read.table('~/Projects/eldamaty2020b/analysis/R_covariates.txt',sep="\t",header=TRUE)
+## --> model performance depends on units being in the same scale
+load(file='~/Projects/eldamaty2020b/analysis/cmi.RData')
+## TODO -- update path names
+load(file='~/Projects/eldamaty2020b/analysis/vexp-latent-estimates.RData')
+# remove excluded subjects 
+adsdf.c <- adsdf[complete.cases(adsdf$wave),]
+beh.lv.df <- beh.lv.df[complete.cases(adsdf$wave),]
+# bring it all together
+df <- cbind(adsdf.c,beh.lv.df[,3:8],vexp.lv.df[,608:611])
+df$cmi <- df$predicted.age - df$age
+df[which(df$dusi_lie > 5),] <- NA
+### Plotting Correlation Matrices
+plot_matrix <- function(matrix_toplot){
+corrplot::corrplot(matrix_toplot, is.corr = FALSE,
+               type = 'lower',
+               order = "original",
+               tl.col='black', tl.cex=.75)
+}
+```
+
+### CMI Violence Risk Mediation Model
+We fit a path analysis and provide parameter estimates for each direct and indirect path leading to dusi violence proneness from CMI. We also add other important covariates.
+```{r}
+# a linear growth model with a time-varying covariate
+model <- ' 
+          dusi_violencerisk ~ b*cmi + ses + sex + c*bas_drive
+          bas_drive ~ a*cmi
+          cmi ~ pds + sex
+          total := b*c + a
+          indirect := b*c
+          direct := a
+          '
+# Fit the structural equation model and display paths
+fit.path.cmi.beh <- sem(model, data=df,missing = "fiml",meanstructure=TRUE,std.lv=TRUE,se = "robust")
+# display modification indices
+modificationindices(fit.path.cmi.beh, minimum.value = 5)
+plot_matrix(residuals(fit.path.cmi.beh, type="cor")$cov)
+# display standardized values
+standardizedSolution(fit.path.cmi.beh, type = "std.all", se = TRUE, zstat = TRUE, 
+                     pvalue = TRUE, ci = TRUE, level = 0.95, cov.std = TRUE, 
+                     remove.eq = TRUE, remove.ineq = TRUE, remove.def = FALSE, 
+                     partable = NULL, GLIST = NULL, est = NULL,
+                     output = "data.frame")
+summary(fit.path.cmi.beh, fit.measures=TRUE)
+semPlot:::semPaths(fit.path.cmi.beh,what='std',fade=FALSE,residuals=FALSE,intercepts=FALSE,layout='tree2',edge.label.cex = 1.2,rotation=1,sizeMan=7,nodeLabels = c("DUSI-VP","BAS-D","CMI","SES","Sex","PDS"),curvePivot=TRUE,curve=1.2,edge.color="black",label.cex=1.3,edge.width=0.8,border.width=2.35,trans=FALSE)
+lavaan:::inspect(fit.path.cmi.beh,'r2')
+```
+
+### CMI correlation
+```{r}
+# here we are grabbing all behavioral data
+df.corr <- df[,6:127]
+# make sure we add our recent additions as well
+df.corr$cmi <- df$cmi
+df.corr$vexp.latent <- df$vexp.latent
+df.corr$snav.latent <- df$snav.latent
+df.corr$fdss.latent <- df$fdss.latent
+df.corr$pos_emot <- df$pos_emot
+df.corr$neg_emot <- df$neg_emot
+df.corr$inhibitory_control <- df$inhibitory_control
+df.corr$reward_proc <- df$reward_proc
+# compute correlation 
+correlation <- corr.test(df.corr,adjust="none",alpha=0.05,)
+# extract the correlations with dusi lie scale
+age_corr <- as.array(correlation$r[,c("cmi")])
+age_pcorr <- as.array(correlation$p[,c("cmi")])
+corr_df <- data.frame(age_corr)
+pcorr_df <- data.frame(age_pcorr)
+# create a variable for the row names (tidy!) and remove redundant row names (should be none but good practice)
+corr_df$vars <- rownames(corr_df)
+pcorr_df$vars <- rownames(pcorr_df)
+rownames(corr_df) <- NULL
+rownames(pcorr_df) <- NULL
+# look at only significant correlations
+corr_df <- subset(corr_df, age_corr > 0.15 | age_corr < -0.15)
+pcorr_df <- subset(pcorr_df, age_corr > 0.15 | age_corr < -0.15)
+print(corr_df)
+print(pcorr_df)
+# visualize ranked
+ggplot(corr_df) +
+    geom_point(aes(x = age_corr, y = reorder(vars, age_corr)))
+```
+
+And that's it! That's how you can use behavioral task performance and survey responses to build latent factor estimates and how you can use these as features to estimate an outcome (like age!). Note that the latent factor estimates perform better because they partial out collinear associations in the data. Regularized regression can help you remove redundancy but the job is made much easier if the data has been previously reduced. So good practice might be to start off with your raw behavioral data, make sure you understand how similar measures may cluster under an unobservable latent factor then work towards estimating that latent factor.
