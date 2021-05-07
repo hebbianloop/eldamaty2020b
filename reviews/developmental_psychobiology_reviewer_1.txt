@@ -1,0 +1,61 @@
+In this manuscript, the authors use a data-driven approach to calculate a cognitive maturation index in adolescents using data from a 3-wave longitudinal sample spanning ages 11-18. To calculate the predicted age of each individual, the authors conducted a factor analysis with multiple behavioral domains, including inhibitory control, reward sensitivity / risk perception, and positive and negative emotional face processing. Cognitive maturity is then defined as the difference between predicted and chronological age. The authors found that individuals with a higher CMI reported increased risk for exposure to violent outcomes, and this effect was mediated by self-reported desire for reward seeking (BAS-D).
+
+This manuscript has several strengths, including the use of advanced statistical approaches. However, as detailed below, I have several concerns that limit my enthusiasm for the manuscript in its current form. One major concern is that the authors include emerging adulthood in the title and manuscript, but they do report any data from participants above 18. Second, the authors do not test nonlinear developmental trajectories, which are clearly warranted given the predictions from both Dual Systems and Maturational Imbalance models. Therefore, many claims that are made regarding these models are not supported by the current analyses. Third, it is unclear why the authors only tested violent outcomes in the mediation models when they have data for multiple life outcomes that are relevant. My suggestions and concerns are detailed below.
+
+
+Major
+
+The title and introduction refer to emerging adults, but the current sample only tests up to age 18. Therefore, the authors cannot make claims about outcomes or risk factors in emerging adulthood. Please edit the title and manuscript accordingly.
+
+In the introduction and discussion, the authors should include a more thorough review and discussion of prior literature. For example, they do not discuss nonlinear trajectories of development, as has been shown in Somerville et al 2011 JOCN and Braams 2016 J Neuro. Further, the authors do not discuss a very relevant paper: Rudolph, Marc D., et al. "At risk of being risky: the relationship between “brain age” under emotional states and risk preference." Developmental cognitive neuroscience 24 (2017): 93-106. This paper uses data-driven approaches to quantify age, which then predicts real-world behavior, which is related to the approach implemented in the current manuscript.
+
+The authors report multiple analyses in the results, but the statistical models are not specified. For each result, could the authors please explain which factors and interactions were tested. I had to look at the linked code to determine which factors were included in which models. Please report this in the manuscript.
+
+The authors fit linear models but did not run mixed effect models and include random intercepts or random slopes to account for the repeated measures within subjects. Please redo the analyses including measurements from all three timepoints and random effects to account for the repeated measures within subject.
+
+Can the authors please explain how they corrected for multiple comparisons for both the linear regressions and the mediation models (if additional mediation models were tested).
+
+For each cognitive domain, it would be helpful if the authors reported the effects of nonlinear (e.g. quadratic, asymptotic, or GAM fits) age on the performance metrics. This is especially important given that prior literature demonstrates that inhibitory control and reward/affective processes follow distinct developmental trajectories.
+
+For the mediation model, it is unclear to me why this is the only mediation model reported. Can the authors provide more theoretical justification as to why BAS-D would mediate the relationship between CMI and the violence metric. It is unclear why the authors only tested the affect of BAS-D instead of the latent score for risk-taking. Further, there is little justification as to why reward processes would be related to violence but inhibitory and emotional control would not. Can the authors please report these alternative models.
+
+For the mediation model, please report the proportion mediated. Can the authors also please clarify what covariates were used in the mediation model (were EPLF and SES included?). If no covariates were used, please conduct an additional mediation model including the other variables as covariates.
+
+Please conduct a sensitivity analyses to support the choice and direction of pathways in the mediation model.
+
+The DUSI-R also includes measures of (1) substance abuse, (2) psychiatric disorder, (3) behavior problems, (4) school adjustment, (5) health status, (6) work adjustment, (7) peer relations, (8) social competency, (9) family adjustment, and (10) leisure/recreation. It is unclear to me why the authors did not test additional outcome variables from this measure to demonstrate the specificity of the effect of violence.
+
+In the discussion, the authors claim that the current results identified distinctions between the Dual Systems and Maturational Imbalance hypotheses. However this is not the case. Further, it is unclear if these results reflect either model because no nonlinear age effects were examined. (e.g. the risk/reward processing factor should follow a quadratic trajectory). Please examine nonlinear age trajectories or edit the text accordingly.
+
+The discussion restates the results, but does not contextualize the findings relative to the prior literature or theoretically driven a priori hypotheses. Can the authors please provide more discussion of how these results replicate prior work or offer new insights.
+
+The authors make causal claims regarding the mediation analysis results. However these claims cannot be made given the type of data tested. Please temper the causal language throughout the manuscript.
+
+The authors discuss CMI as though it is a trait-stable variable. However, it is reasonable to think that individual CMI may vary within a person as they age. Given the longitudinal nature of the datasets, can the authors please report how within-person changes of CMI relate to the behavioral outcomes.
+
+The paper would benefit from a discussion about how being the recipient of violence vs. the one who commits violence may relate to these cognitive measures and predicted age, as the DUSI-R questionnaire collapses both experiences into one variable.
+
+Please include a discussion of limitations and open questions in the discussion. 
+
+
+Minor
+
+In the methods, please clarify if the tanner scale or the Petersen scale was used to quantify pubertal stage.
+
+For figure 1, please add a legend to the graphs for clarity.
+
+For the temporal discounting results, the authors calculated AUC, but they did not calculate k parameters. Can you please include k parameters in the analysis.
+
+For the response time variance and false alarm response time effects on d’, it is unclear how this analysis was conducted. Can you specify the model that you ran. The authors state that “rapid response to early false alarms led to greater caution later in the task”. However, it is unclear why the authors are making inferences about earlier vs. later timing. Is trial number is included in the model? It would be helpful if the authors also included a trial-by-trial speed-accuracy trade-off analysis using multilevel logistic regression.
+
+In the risk taking section, the authors state “the risk/reward evaluation latent factor was found to drive impulsive risk taking and a preference for immediate rewards”. This makes it sound like this factor predicts these variable outcomes. However, these variables are included in the factor. Please change the phrasing of this sentence.
+
+The authors use a lot of acronyms in the text that are difficult to track. If possible, please spell out the acronyms.
+
+The authors make claims about proactive control, but it is unclear whether or how the CPT analyses examined distinctions between proactive/reactive control processes.
+
+In the discussion, in the Latent Cognitive Factors, it would be helpful if the authors broke this down into separate paragraphs for each factor type. Further, combining all SES effects into one paragraph would increase clarity.
+
+The experimental design and multiple measurements are difficult to track. It would be helpful to include a figure summarizing all measurements taken, and at which waves they were collected. Further, it would be helpful to include a task depiction for the behavioral tasks.
+
+IQ was approximated for all participants, but analyses using IQ as a factor were only conducted for the CMI variable. Can you please include IQ as a covariate for the age analyses of each behavioral domain.
